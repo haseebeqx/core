@@ -36,6 +36,7 @@ use OCP\IDBConnection;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use OC\Cache\CappedMemoryCache;
 
 /**
  * Cache mounts points per user in the cache so we can easilly look them up
@@ -72,6 +73,8 @@ class UserMountCache implements IUserMountCache {
 		$this->connection = $connection;
 		$this->userManager = $userManager;
 		$this->logger = $logger;
+		$this->cacheInfoCache = new CappedMemoryCache();
+		$this->mountsForUsers = new CappedMemoryCache();
 	}
 
 	public function registerMounts(IUser $user, array $mounts) {
